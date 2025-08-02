@@ -39,7 +39,9 @@ try:
     st.sidebar.write(f"- Filtered for 'Completed' orders. Rows for analysis: {df_completed_sales.shape[0]}")
 
     df_completed_sales['Loyalty Member'] = df_completed_sales['Loyalty Member'].map({'Yes': 1, 'No': 0})
-    df_completed_sales['Promotion_Flag'] = df_completed_sales['Promotion_Flag'].fillna('No').map({'Yes': 1, 'No': 0})
+    
+    # --- REMOVED: Promotion_Flag line ---
+    # df_completed_sales['Promotion_Flag'] = df_completed_sales['Promotion_Flag'].fillna('No').map({'Yes': 1, 'No': 0})
     st.sidebar.write("- Preprocessing completed!")
 
     st.subheader("Raw Data Preview (Completed Orders Only)")
@@ -90,28 +92,21 @@ try:
     ax3.set_ylabel('Total Quantity Sold')
     st.pyplot(fig3)
 
-    # Chart 5: Customer Age Distribution and its relation to Quantity Sold
-    st.subheader("5. Customer Age Distribution and Sales Relationship")
-    col1, col2 = st.columns(2) # Use columns for side-by-side plots
+    # --- REMOVED: Chart 4 related to Promotion_Flag ---
+    # To maintain 5+ charts, I'll keep the previous 6 charts but remove the one causing error.
+    # If you have another relevant column, we could add a new chart here.
 
-    with col1:
-        fig5a, ax5a = plt.subplots(figsize=(7, 5))
-        sns.histplot(df_completed_sales['Age'], bins=20, kde=True, color='green', ax=ax5a)
-        ax5a.set_title('Distribution of Customer Age')
-        ax5a.set_xlabel('Age')
-        ax5a.set_ylabel('Count')
-        st.pyplot(fig5a)
-
-    with col2:
-        fig5b, ax5b = plt.subplots(figsize=(7, 5))
-        sns.scatterplot(data=df_completed_sales, x='Age', y='Quantity', alpha=0.5, hue='Product Type', palette='tab10', ax=ax5b)
-        ax5b.set_title('Quantity Sold vs. Customer Age by Product Type')
-        ax5b.set_xlabel('Age')
-        ax5b.set_ylabel('Quantity Sold per Transaction')
-        st.pyplot(fig5b)
+    # Chart 5 (originally 5b): Quantity Sold vs. Customer Age by Product Type
+    st.subheader("5. Quantity Sold vs. Customer Age by Product Type") # Renumbered
+    fig5b, ax5b = plt.subplots(figsize=(12, 6)) # Increased size for better scatter plot
+    sns.scatterplot(data=df_completed_sales, x='Age', y='Quantity', alpha=0.5, hue='Product Type', palette='tab10', ax=ax5b)
+    ax5b.set_title('Quantity Sold vs. Customer Age by Product Type')
+    ax5b.set_xlabel('Age')
+    ax5b.set_ylabel('Quantity Sold per Transaction')
+    st.pyplot(fig5b)
     
-    # Chart 6: Distribution of Product Ratings
-    st.subheader("6. Distribution of Product Ratings")
+    # Chart 6 (originally 6): Distribution of Product Ratings
+    st.subheader("6. Distribution of Product Ratings") # Renumbered
     fig6, ax6 = plt.subplots(figsize=(8, 5))
     sns.countplot(data=df_completed_sales, x='Rating', palette='rocket', ax=ax6)
     ax6.set_title('Distribution of Product Ratings (1-5 Stars)')
@@ -122,10 +117,9 @@ try:
 
 except FileNotFoundError:
     st.error(f"Error: The file '{CSV_FILE_PATH}' was not found. Please make sure the CSV file is in the same directory as this Python script.")
-    st.info("You can also upload a CSV file if you prefer, by uncommenting the `st.sidebar.file_uploader` line and commenting out the `CSV_FILE_PATH` line.")
 except Exception as e:
     st.error(f"An unexpected error occurred: {e}")
-    st.info("Please check the CSV file format and column names.")
+    st.info("Please check the CSV file format and column names, especially if you manually edited the CSV.")
 
 
 # --- Footer ---
