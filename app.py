@@ -90,16 +90,6 @@ try:
     ax3.set_ylabel('Total Quantity Sold')
     st.pyplot(fig3)
 
-    # Chart 4: Impact of Promotions on Sales Quantity
-    st.subheader("4. Quantity Sold Distribution with/without Promotions")
-    fig4, ax4 = plt.subplots(figsize=(8, 5))
-    sns.boxplot(data=df_completed_sales, x='Promotion_Flag', y='Quantity', palette='coolwarm', ax=ax4)
-    ax4.set_title('Quantity Sold Distribution with/without Promotions')
-    ax4.set_xlabel('Promotion Active (0: No, 1: Yes)')
-    ax4.set_ylabel('Quantity Sold per Transaction')
-    ax4.set_xticklabels(['No Promotion', 'Promotion Active'])
-    st.pyplot(fig4)
-
     # Chart 5: Customer Age Distribution and its relation to Quantity Sold
     st.subheader("5. Customer Age Distribution and Sales Relationship")
     col1, col2 = st.columns(2) # Use columns for side-by-side plots
@@ -116,4 +106,28 @@ try:
         fig5b, ax5b = plt.subplots(figsize=(7, 5))
         sns.scatterplot(data=df_completed_sales, x='Age', y='Quantity', alpha=0.5, hue='Product Type', palette='tab10', ax=ax5b)
         ax5b.set_title('Quantity Sold vs. Customer Age by Product Type')
-        ax5b.set_xlabel
+        ax5b.set_xlabel('Age')
+        ax5b.set_ylabel('Quantity Sold per Transaction')
+        st.pyplot(fig5b)
+    
+    # Chart 6: Distribution of Product Ratings
+    st.subheader("6. Distribution of Product Ratings")
+    fig6, ax6 = plt.subplots(figsize=(8, 5))
+    sns.countplot(data=df_completed_sales, x='Rating', palette='rocket', ax=ax6)
+    ax6.set_title('Distribution of Product Ratings (1-5 Stars)')
+    ax6.set_xlabel('Rating')
+    ax6.set_ylabel('Number of Ratings')
+    st.pyplot(fig6)
+
+
+except FileNotFoundError:
+    st.error(f"Error: The file '{CSV_FILE_PATH}' was not found. Please make sure the CSV file is in the same directory as this Python script.")
+    st.info("You can also upload a CSV file if you prefer, by uncommenting the `st.sidebar.file_uploader` line and commenting out the `CSV_FILE_PATH` line.")
+except Exception as e:
+    st.error(f"An unexpected error occurred: {e}")
+    st.info("Please check the CSV file format and column names.")
+
+
+# --- Footer ---
+st.markdown("---")
+st.markdown("Developed for Data Science Solution Assignment. Data preprocessing and visualizations based on P7 design.")
